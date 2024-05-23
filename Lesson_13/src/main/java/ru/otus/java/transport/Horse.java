@@ -11,7 +11,7 @@ public class Horse extends Transport {
 
     @Override
     protected boolean ride(int distance, TypeOfGround type) {
-        if (staminaConsumption * distance > stamina || type == TypeOfGround.swamp) {
+        if (staminaConsumption * distance > stamina || type == TypeOfGround.SWAMP) {
             return false;
         }
         stamina -= staminaConsumption * distance;

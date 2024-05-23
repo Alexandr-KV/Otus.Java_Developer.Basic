@@ -9,9 +9,6 @@ public class Bike extends Transport {
 
     @Override
     protected boolean ride(int distance, TypeOfGround type) {
-        if (type == TypeOfGround.swamp) {
-            return false;
-        }
-        return true;
+        return type != TypeOfGround.SWAMP;
     }
 }

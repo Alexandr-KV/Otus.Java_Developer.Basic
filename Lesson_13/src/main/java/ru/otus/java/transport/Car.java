@@ -11,7 +11,7 @@ public class Car extends Transport {
 
     @Override
     protected boolean ride(int distance, TypeOfGround type) {
-        if (staminaConsumption * distance > stamina || type == TypeOfGround.swamp || type == TypeOfGround.forest) {
+        if (staminaConsumption * distance > stamina || type == TypeOfGround.SWAMP || type == TypeOfGround.FOREST) {
             return false;
         }
         stamina -= staminaConsumption * distance;

@@ -4,16 +4,20 @@ import ru.otus.java.TypeOfGround;
 
 
 public class Human {
-    final private String name;
+    private final  String name;
     private Transport currentTransport;
     protected int stamina; // выносливость человека, у другого транспорта такая переменная будет означать количество бензина или сил
-    final private int staminaConsumption; // сколько человек тратит выносливости на преодоление условной единицы расстояния
+    private final  int staminaConsumption; // сколько человек тратит выносливости на преодоление условной единицы расстояния
 
     public Human(String name, int stamina, int staminaConsumption) {
         this.name = name;
         this.stamina = stamina;
         this.staminaConsumption = staminaConsumption;
         currentTransport = null;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public void getOnTransport(Transport transport) {
@@ -30,7 +34,7 @@ public class Human {
 
     public boolean ride(int distance, TypeOfGround type) {
         if (currentTransport == null) {
-            if (staminaConsumption * distance > stamina || type == TypeOfGround.swamp) {
+            if (staminaConsumption * distance > stamina || type == TypeOfGround.SWAMP) {
                 return false;
             }
             stamina -= staminaConsumption * distance;
