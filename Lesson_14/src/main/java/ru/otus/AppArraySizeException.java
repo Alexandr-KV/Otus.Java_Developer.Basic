@@ -1,6 +1,7 @@
 package ru.otus;
 
 public class AppArraySizeException extends RuntimeException{
-    public AppArraySizeException() {
+    public String getMessage(){
+        return "Неверный размер массива";
     }
 }

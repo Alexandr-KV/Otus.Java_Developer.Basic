@@ -5,42 +5,26 @@ public class Main {
         String[][] arr1 = new String[][]{{"1", "2", "3", "4"}, {"1", "2", "3", "4"}, {"1", "2", "3"}};
         String[][] arr2 = new String[][]{{"1", "2", "3", "4"}, {"a", "b", "c", "d"}, {"1", "2", "3", "4"}, {"1", "2", "3", "4"}};
         String[][] arr3 = new String[][]{{"1", "2", "3", "4"}, {"1", "2", "3", "4"}, {"1", "2", "3", "4"}, {"1", "2", "3", "4"}};
-        //Создаем два массива, один правильный, два других с ошибками
-        //Применяем метод к этим массивам  и обрабатываем исключения
+
         try {
-            try {
-                int result = sumOfArrayElements4x4(arr1);
-                System.out.println(result);
-            } catch (AppArraySizeException e) {
-                System.out.println("Неверный размер массива");
-            }
-        } catch (AppArrayDataException e) {
-            System.out.println("Неверное значение массива");
-            System.out.println("Ошибка в ячейке: (" + e.i + "," + e.j + ")");
+            int result = sumOfArrayElements4x4(arr1);
+            System.out.println(result);
+        } catch (AppArrayDataException | AppArraySizeException e) {
+            System.out.println(e.getMessage());
         }
 
         try {
-            try {
-                int result = sumOfArrayElements4x4(arr2);
-                System.out.println(result);
-            } catch (AppArraySizeException e) {
-                System.out.println("Неверный размер массива");
-            }
-        } catch (AppArrayDataException e) {
-            System.out.println("Неверное значение массива");
-            System.out.println("Ошибка в ячейке: (" + e.i + "," + e.j + ")");
+            int result = sumOfArrayElements4x4(arr2);
+            System.out.println(result);
+        } catch (AppArrayDataException | AppArraySizeException e) {
+            System.out.println(e.getMessage());
         }
 
         try {
-            try {
-                int result = sumOfArrayElements4x4(arr3);
-                System.out.println(result);
-            } catch (AppArraySizeException e) {
-                System.out.println("Неверный размер массива");
-            }
-        } catch (AppArrayDataException e) {
-            System.out.println("Неверное значение массива");
-            System.out.println("Ошибка в ячейке: (" + e.i + "," + e.j + ")");
+            int result = sumOfArrayElements4x4(arr3);
+            System.out.println(result);
+        } catch (AppArrayDataException | AppArraySizeException e) {
+            System.out.println(e.getMessage());
         }
     }
 
