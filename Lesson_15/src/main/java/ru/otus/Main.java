@@ -2,6 +2,7 @@ package ru.otus;
 
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static ru.otus.Employee.*;
 
@@ -35,7 +36,7 @@ public class Main {
         System.out.println(averageAge(employees, 18));
     }
 
-    public static ArrayList<Integer> createAList(int min, int max) {
+    public static ArrayList<Integer> createAList(int min, int max) { //ArrayList возвращает по условию
         ArrayList<Integer> list = new ArrayList<>();
         for (int i = min; i <= max; i++) {
             list.add(i);
@@ -43,25 +44,25 @@ public class Main {
         return list;
     }
 
-    public static int sumOfElementsGreaterThanFive(ArrayList<Integer> list) {
+    public static int sumOfElementsGreaterThanFive(List<Integer> list) {
         int summa = 0;
-        for (int i = 0; i < list.size(); i++) {
-            if (list.get(i) > 5) {
-                summa += list.get(i);
+        for (Integer elem : list) {
+            if (elem > 5) {
+                summa += elem;
             }
         }
         return summa;
     }
 
-    public static void fillingOutTheList(int number, ArrayList<Integer> list) {
-        for (int i = 0; i < list.size(); i++) {
+    public static void fillingOutTheList(int number, List<Integer> list) {
+        for (Integer i : list) {
             list.set(i, number);
         }
     }
 
-    public static void incrementEachListItem(int number, ArrayList<Integer> list) {
-        for (int i = 0; i < list.size(); i++) {
-            list.set(i, number + list.get(i));
+    public static void incrementEachListItem(int number, List<Integer> list) {
+        for (Integer i : list) {
+            i += number;
         }
     }
 

@@ -1,6 +1,7 @@
 package ru.otus;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Employee {
     private final String name;
@@ -19,37 +20,37 @@ public class Employee {
                 '}';
     }
 
-    public static ArrayList<String> employeeNames(ArrayList<Employee> list) {
-        ArrayList<String> names = new ArrayList<>();
-        for (int i = 0; i < list.size(); i++) {
-            names.add(list.get(i).name);
+    public static List<String> employeeNames(List<Employee> list) {
+        List<String> names = new ArrayList<>();
+        for (Employee emp : list) {
+            names.add(emp.name);
         }
         return names;
     }
 
-    public static ArrayList<Employee> employeesOverTheMinimumAge(ArrayList<Employee> list, int minAge) {
-        ArrayList<Employee> list2 = new ArrayList<>();
-        for (int i = 0; i < list.size(); i++) {
-            if (list.get(i).age >= minAge) {
-                list2.add(list.get(i));
+    public static List<Employee> employeesOverTheMinimumAge(List<Employee> list, int minAge) {
+        List<Employee> list2 = new ArrayList<>();
+        for (Employee emp : list) {
+            if (emp.age >= minAge) {
+                list2.add(emp);
             }
         }
         return list2;
     }
 
-    public static boolean averageAge(ArrayList<Employee> list, double minAverageAge) {
+    public static boolean averageAge(List<Employee> list, double minAverageAge) {
         int sumOfAges = 0;
-        for (int i = 0; i < list.size(); i++) {
-            sumOfAges += list.get(i).age;
+        for (Employee emp : list) {
+            sumOfAges += emp.age;
         }
         return minAverageAge < (double) sumOfAges / list.size();
     }
 
-    public static Employee youngestEmployee(ArrayList<Employee> list) {
+    public static Employee youngestEmployee(List<Employee> list) {
         Employee youngestEmployee = list.get(0);
-        for (int i = 1; i < list.size(); i++) {
-            if (youngestEmployee.age > list.get(i).age) {
-                youngestEmployee = list.get(i);
+        for (Employee emp : list) {
+            if (youngestEmployee.age > emp.age) {
+                youngestEmployee = emp;
             }
         }
         return youngestEmployee;
