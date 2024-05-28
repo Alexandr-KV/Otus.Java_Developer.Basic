@@ -55,14 +55,14 @@ public class Main {
     }
 
     public static void fillingOutTheList(int number, List<Integer> list) {
-        for (Integer i : list) {
+        for (int i = 0; i < list.size(); i++) {
             list.set(i, number);
         }
     }
 
     public static void incrementEachListItem(int number, List<Integer> list) {
-        for (Integer i : list) {
-            i += number;
+        for (int i = 0; i < list.size(); i++) {
+            list.set(i, number + list.get(i));
         }
     }
 
