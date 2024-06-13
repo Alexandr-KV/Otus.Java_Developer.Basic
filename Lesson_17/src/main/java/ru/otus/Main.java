@@ -2,6 +2,7 @@ package ru.otus;
 
 
 import java.util.Arrays;
+
 import static ru.otus.Sorting.bubbleSort;
 
 public class Main {
@@ -17,6 +18,7 @@ public class Main {
         dataBase.add(person4);
         System.out.println(dataBase.findById(96391465321L));
         System.out.println(dataBase.isEmployee(10180023452L));
+        System.out.println(dataBase.isEmployee(87634521847L));
         System.out.println(dataBase.isManager(person2));
         System.out.println(dataBase.isManager(person4));
 
