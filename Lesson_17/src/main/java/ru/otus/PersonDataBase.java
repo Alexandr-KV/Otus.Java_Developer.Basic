@@ -1,9 +1,10 @@
 package ru.otus;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class PersonDataBase {
+    private static final Set<Position> DIRECTORS_POSITIONS = Set.of(
+            Position.DIRECTOR, Position.BRANCH_DIRECTOR, Position.SENIOR_MANAGER, Position.MANAGER);
 
     Map<Long, Person> dataBase = new HashMap<>();
 
@@ -17,13 +18,11 @@ public class PersonDataBase {
 
     public boolean isManager(Person person) {
         Position position = person.getPosition();
-        return position == Position.MANAGER || position == Position.DIRECTOR || position == Position.BRANCH_DIRECTOR ||
-                position == Position.SENIOR_MANAGER;
+        return DIRECTORS_POSITIONS.contains(position);
     }
 
     public boolean isEmployee(Long id) {
         return !isManager(findById(id));
     }
-
 
 }

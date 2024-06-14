@@ -5,6 +5,11 @@ public class Person {
     private Position position;
     private Long id;
 
+    public Person(String name, Position position, Long id) {
+        this.name = name;
+        this.position = position;
+        this.id = id;
+    }
 
     public Position getPosition() {
         return position;
@@ -12,12 +17,6 @@ public class Person {
 
     public Long getId() {
         return id;
-    }
-
-    public Person(String name, Position position, Long id) {
-        this.name = name;
-        this.position = position;
-        this.id = id;
     }
 
     @Override
