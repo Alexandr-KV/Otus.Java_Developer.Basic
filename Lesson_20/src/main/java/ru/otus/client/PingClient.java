@@ -20,7 +20,11 @@ public class PingClient {
         out.flush();
     }
 
-    public Double read() throws IOException {
+    public Double readDouble() throws IOException {
         return in.readDouble();
+    }
+
+    public String readLine() throws IOException {
+        return in.readUTF();
     }
 }
