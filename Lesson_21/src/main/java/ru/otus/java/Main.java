@@ -36,7 +36,14 @@ public class Main {
         second.start();
         third.start();
         fourth.start();
+        try {
+            first.join();
+            second.join();
+            third.join();
+            fourth.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         System.out.println("Время выполнения реализации 2: " + (System.currentTimeMillis() - time1 - time2));
-
     }
 }
