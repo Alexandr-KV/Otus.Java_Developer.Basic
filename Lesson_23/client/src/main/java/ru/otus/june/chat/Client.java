@@ -13,7 +13,7 @@ public class Client {
 
     public Client() throws IOException {
         Scanner scanner = new Scanner(System.in);
-        socket = new Socket("localhost", 8191);
+        socket = new Socket("localhost", 8190);
         in = new DataInputStream(socket.getInputStream());
         out = new DataOutputStream(socket.getOutputStream());
         new Thread(() -> {
@@ -22,6 +22,14 @@ public class Client {
                     String message = in.readUTF();
                     if (message.equals("/exitok")) {
                         break;
+                    }
+                    if (message.startsWith("/authok ")) {
+                        System.out.println("Удалось успешно войти в чат под именем пользователя: " + message.split(" ")[1]);
+                        continue;
+                    }
+                    if (message.startsWith("/regok ")) {
+                        System.out.println("Удалось успешно пройти регистрацию и войти в чат под именем пользователя: " + message.split(" ")[1]);
+                        continue;
                     }
                     System.out.println(message);
                 }
