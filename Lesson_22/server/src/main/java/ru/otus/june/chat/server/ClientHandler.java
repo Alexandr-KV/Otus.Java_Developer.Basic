@@ -39,11 +39,11 @@ public class ClientHandler {
                         }
                         if (message.startsWith("/w")) {
                             String[] words = message.split(" ");
-                            if (server.isUser(words[1])) {
+                            if (words.length >= 3 && server.isUser(words[1])) {
                                 String name = words[1];
                                 String[] messageArray = Arrays.copyOfRange(words, 2, words.length);
                                 message = String.join(" ", messageArray);
-                                server.personalMessage(username+": "+message, name, username);
+                                server.personalMessage(username + ": (личное сообщение для " + name + ") " + message, name, username);
                             }
                         }
                         continue;

@@ -13,7 +13,7 @@ public class Client {
 
     public Client() throws IOException {
         Scanner scanner = new Scanner(System.in);
-        socket = new Socket("localhost", 8190);
+        socket = new Socket("localhost", 8191);
         in = new DataInputStream(socket.getInputStream());
         out = new DataOutputStream(socket.getOutputStream());
         new Thread(() -> {
