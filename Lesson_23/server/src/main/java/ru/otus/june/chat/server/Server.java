@@ -2,13 +2,10 @@ package ru.otus.june.chat.server;
 
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class Server {
     private int port;
-    private List<ClientHandler> clients;
     private HashMap<String, ClientHandler> clientHandlers;
     private AuthenticationProvider authenticationProvider;
 
@@ -18,7 +15,6 @@ public class Server {
 
     public Server(int port) {
         this.port = port;
-        this.clients = new ArrayList<>();
         this.clientHandlers = new HashMap<>();
         this.authenticationProvider = new InMemoryAuthenticationProvider(this);
     }
@@ -38,25 +34,23 @@ public class Server {
 
     public synchronized void subscribe(ClientHandler clientHandler) {
         broadcastMessage("В чат зашел: " + clientHandler.getUsername());
-        clients.add(clientHandler);
         clientHandlers.put(clientHandler.getUsername(), clientHandler);
     }
 
     public synchronized void unsubscribe(ClientHandler clientHandler) {
-        clients.remove(clientHandler);
         broadcastMessage("Из чата вышел: " + clientHandler.getUsername());
         clientHandlers.remove(clientHandler.getUsername());
     }
 
     public synchronized void broadcastMessage(String message) {
-        for (ClientHandler c : clients) {
-            c.sendMessage(message);
+        for (HashMap.Entry<String, ClientHandler> entry : clientHandlers.entrySet()) {
+            entry.getValue().sendMessage(message);
         }
     }
 
     public boolean isUsernameBusy(String username) {
-        for (ClientHandler c : clients) {
-            if (c.getUsername().equals(username)) {
+        for (HashMap.Entry<String, ClientHandler> entry : clientHandlers.entrySet()) {
+            if (entry.getValue().getUsername().equals(username)) {
                 return true;
             }
         }

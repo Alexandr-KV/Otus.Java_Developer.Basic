@@ -82,13 +82,14 @@ public class ClientHandler {
                         }
                         if (message.startsWith("/kick ")) {
                             String[] words = message.split(" ");
-                            if (words.length == 2 && server.isUsernameBusy(words[1]) && this.role == Role.ADMIN) {
+                            if (words.length == 2 && server.isUsernameBusy(words[1]) && this.isAdmin()) {
                                 String name = words[1];
-                                if (server.getClientHandlerByUsername(name).role == Role.ADMIN){
+                                if (server.getClientHandlerByUsername(name).isAdmin()) {
                                     this.sendMessage("Нельзя удалить админа из чата!");
                                     continue;
                                 }
-                                server.getClientHandlerByUsername(name).disconnectWithoutAnnouncement();
+                                server.getClientHandlerByUsername(name).sendMessage("Вы удалены из чата");
+                                server.getClientHandlerByUsername(name).disconnect(false);
                             } else {
                                 this.sendMessage("Неправильно введена команда, либо вы не являетесь админом");
                             }
@@ -100,9 +101,16 @@ public class ClientHandler {
             } catch (IOException e) {
                 e.printStackTrace();
             } finally {
-                disconnect();
+                disconnect(true);
             }
         }).start();
+    }
+
+    public boolean isAdmin() {
+        if (role == Role.ADMIN) {
+            return true;
+        }
+        return false;
     }
 
     public void sendMessage(String message) {
@@ -113,32 +121,10 @@ public class ClientHandler {
         }
     }
 
-    public void disconnect() {
-        server.unsubscribe(this);
-        try {
-            if (in != null) {
-                in.close();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+    public void disconnect(boolean isUnsubscribe) {
+        if (isUnsubscribe) {
+            server.unsubscribe(this);
         }
-        try {
-            if (out != null) {
-                out.close();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            if (socket != null) {
-                socket.close();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void disconnectWithoutAnnouncement() {
         try {
             if (in != null) {
                 in.close();
