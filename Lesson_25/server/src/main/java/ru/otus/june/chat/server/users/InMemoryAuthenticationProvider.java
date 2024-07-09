@@ -1,32 +1,23 @@
-package ru.otus.june.chat.server;
+package ru.otus.june.chat.server.users;
 
-import java.util.ArrayList;
+import ru.otus.june.chat.server.AuthenticationProvider;
+import ru.otus.june.chat.server.ClientHandler;
+import ru.otus.june.chat.server.Server;
+
 import java.util.List;
 
 public class InMemoryAuthenticationProvider implements AuthenticationProvider {
-    private class User {
-        private String login;
-        private String password;
-        private String username;
-        private Role role;
-
-        public User(String login, String password, String username, Role role) {
-            this.login = login;
-            this.password = password;
-            this.username = username;
-            this.role = role;
-        }
-    }
-
     private Server server;
     private List<User> users;
 
     public InMemoryAuthenticationProvider(Server server) {
         this.server = server;
-        this.users = new ArrayList<>();
-        this.users.add(new User("login1", "pass1", "admin1", Role.ADMIN));
-        this.users.add(new User("login2", "pass2", "admin2", Role.ADMIN));
-        this.users.add(new User("login3", "pass3", "admin3", Role.ADMIN));
+        try {
+            DbHandler.Connect();
+            users = DbHandler.ReadDB();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -43,7 +34,7 @@ public class InMemoryAuthenticationProvider implements AuthenticationProvider {
         return null;
     }
 
-    private Role getRoleByLoginAndPassword(String login, String password) {
+    private String getRoleByLoginAndPassword(String login, String password) {
         for (User u : users) {
             if (u.login.equals(login) && u.password.equals(password)) {
                 return u.role;
@@ -102,10 +93,15 @@ public class InMemoryAuthenticationProvider implements AuthenticationProvider {
             clientHandler.sendMessage("Указанное имя пользователя уже занято");
             return false;
         }
-        users.add(new User(login, password, username, Role.USER));
+        users.add(new User(login, password, username, "USER"));
         clientHandler.setUsername(username);
-        clientHandler.setRole(Role.USER);
+        clientHandler.setRole("USER");
         server.subscribe(clientHandler);
+        try {
+            DbHandler.WriteDB(login, password, username, "USER");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         clientHandler.sendMessage("/regok " + username);
         return true;
     }
