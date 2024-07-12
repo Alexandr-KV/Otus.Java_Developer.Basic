@@ -27,7 +27,7 @@ public class Box<T extends Fruit> {
         if (fruits.contains(fruit)) {
             fruit.setInTheBox(false);
             fruits.remove(fruit);
-        }else {
+        } else {
             System.out.println("Такого фрукта нет в этой коробке");
         }
     }
@@ -40,13 +40,18 @@ public class Box<T extends Fruit> {
         return weightOfFruits;
     }
 
-    public boolean compare(Box box) {
+    public boolean compare(Box<? extends Fruit> box) {
         return Math.abs(this.weight() - box.weight()) < 0.0001;
     }
 
     public void pourOver(Box<T> box) {
-        box.fruits.addAll(this.fruits);
-        this.fruits.clear();
+        if (box != null && !box.equals(this)) {
+            box.fruits.addAll(this.fruits);
+            this.fruits.clear();
+        } else {
+            System.out.println("Нельзя пересыпать фрукты в эту же " +
+                    "или несуществующую коробку");
+        }
     }
 
     @Override
