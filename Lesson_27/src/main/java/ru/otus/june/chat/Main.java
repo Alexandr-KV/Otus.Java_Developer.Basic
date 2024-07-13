@@ -10,7 +10,7 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
-        Boolean isFileExist = false;
+        boolean isFileExist = false;
         String fileName = null;
         while (!isFileExist) {
             System.out.println("Введите имя файла");
@@ -37,9 +37,8 @@ public class Main {
             String data = new String(bytes, StandardCharsets.UTF_8);
             int indexOfSequence = data.indexOf(sequence);
             while (indexOfSequence != -1) {
-                data = data.replaceFirst(sequence, "");
                 result += 1;
-                indexOfSequence = data.indexOf(sequence);
+                indexOfSequence = data.indexOf(sequence, indexOfSequence + sequence.length());
             }
         } catch (IOException e) {
             e.printStackTrace();
