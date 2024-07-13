@@ -1,5 +1,7 @@
 package ru.otus.june.chat.server;
 
+import ru.otus.june.chat.server.users.InMemoryAuthenticationProvider;
+
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;

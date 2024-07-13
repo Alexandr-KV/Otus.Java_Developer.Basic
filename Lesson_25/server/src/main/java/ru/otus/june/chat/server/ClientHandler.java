@@ -12,7 +12,7 @@ public class ClientHandler {
     private DataInputStream in;
     private DataOutputStream out;
     private String username;
-    private Role role;
+    private String role;
 
     public String getUsername() {
         return username;
@@ -22,7 +22,7 @@ public class ClientHandler {
         this.username = username;
     }
 
-    public void setRole(Role role) {
+    public void setRole(String role) {
         this.role = role;
     }
 
@@ -107,10 +107,7 @@ public class ClientHandler {
     }
 
     public boolean isAdmin() {
-        if (role == Role.ADMIN) {
-            return true;
-        }
-        return false;
+        return role.equals("ADMIN");
     }
 
     public void sendMessage(String message) {
