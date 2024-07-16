@@ -5,59 +5,30 @@ import java.util.concurrent.Executors;
 
 public class Main {
     public static void main(String[] args) {
-        ExecutorService executor = Executors.newFixedThreadPool(3);
-        Object monitor = new Object();
-        Counter counter = new Counter(0);
-        executor.execute(() -> {
-            synchronized (monitor) {
-                for (int i = 0; i < 5; i++) {
-                    while (counter.getCount() != 0) {
-                        try {
-                            monitor.wait();
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                    System.out.print("A");
-                    counter.setCount(1);
-                    monitor.notifyAll();
-                }
-            }
-        });
+        try (ExecutorService executor = Executors.newFixedThreadPool(3)) {
+            Object monitor = new Object();
+            Counter counter = new Counter(0);
+            executor.execute(() -> printChar(monitor, counter, 'A', 0, 1));
+            executor.execute(() -> printChar(monitor, counter, 'B', 1, 2));
+            executor.execute(() -> printChar(monitor, counter, 'C', 2, 0));
+        }
+    }
 
-        executor.execute(() -> {
-            synchronized (monitor) {
-                for (int i = 0; i < 5; i++) {
-                    while (counter.getCount() != 1) {
-                        try {
-                            monitor.wait();
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
+    private static void printChar(Object monitor, Counter counter, char symbol, int expectedCount, int nextCount) {
+        synchronized (monitor) {
+            for (int i = 0; i < 5; i++) {
+                while (counter.getCount() != expectedCount) {
+                    try {
+                        monitor.wait();
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                        throw new IllegalStateException(e);
                     }
-                    System.out.print("B");
-                    counter.setCount(2);
-                    monitor.notifyAll();
                 }
+                System.out.print(symbol);
+                counter.setCount(nextCount);
+                monitor.notifyAll();
             }
-        });
-
-        executor.execute(() -> {
-            synchronized (monitor) {
-                for (int i = 0; i < 5; i++) {
-                    while (counter.getCount() != 2) {
-                        try {
-                            monitor.wait();
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                    System.out.print("C");
-                    counter.setCount(0);
-                    monitor.notifyAll();
-                }
-            }
-        });
-        executor.close();
+        }
     }
 }
