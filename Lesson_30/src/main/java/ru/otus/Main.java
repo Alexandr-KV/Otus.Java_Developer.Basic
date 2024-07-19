@@ -10,7 +10,7 @@ public class Main {
 
     public static int[] arrayAfterLastUnit(int[] array) throws RuntimeException {
         int indexOfLastUnit = -1;
-        for (int i : array) {
+        for (int i = 0; i < array.length; i++) {
             if (array[i] == 1) {
                 indexOfLastUnit = i;
             }
