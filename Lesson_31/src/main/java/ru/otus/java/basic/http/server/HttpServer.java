@@ -3,10 +3,13 @@ package ru.otus.java.basic.http.server;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class HttpServer {
     private int port;
     private Dispatcher dispatcher;
+    static ExecutorService executor = Executors.newFixedThreadPool(3);
 
     public HttpServer(int port) {
         this.port = port;
@@ -17,8 +20,9 @@ public class HttpServer {
         try (ServerSocket serverSocket = new ServerSocket(port)) {
             System.out.println("Сервер запущен на порту: " + port);
             while (true) {
-                new Thread(() -> {
-                    try (Socket socket = serverSocket.accept()) {
+                Socket socket = serverSocket.accept();
+                executor.execute(() -> {
+                    try {
                         byte[] buffer = new byte[8192];
                         int n = socket.getInputStream().read(buffer);
                         String rawRequest = new String(buffer, 0, n);
@@ -28,7 +32,7 @@ public class HttpServer {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                }).start();
+                });
             }
         } catch (IOException e) {
             e.printStackTrace();
