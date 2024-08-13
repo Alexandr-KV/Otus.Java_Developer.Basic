@@ -1,5 +1,10 @@
 package ru.otus.java.basic.http.server;
 
+import org.apache.logging.log4j.LogManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -8,9 +13,21 @@ public class HttpRequest {
     private String uri;
     private HttpMethod method;
     private Map<String, String> parameters;
+    private String body;
+    private Map<String, String> headers;
+    private static final Logger logger = LoggerFactory.getLogger(HttpRequest.class);
+
+
+    public String getRoutingKey() {
+        return method + " " + uri;
+    }
 
     public String getUri() {
         return uri;
+    }
+
+    public String getBody() {
+        return body;
     }
 
     public HttpRequest(String rawRequest) {
@@ -24,6 +41,17 @@ public class HttpRequest {
         this.uri = rawRequest.substring(startIndex + 1, endIndex);
         this.method = HttpMethod.valueOf(rawRequest.substring(0, startIndex));
         this.parameters = new HashMap<>();
+        this.headers = new HashMap<>();
+        String[] header = rawRequest.split("\r");
+        header = Arrays.copyOfRange(header, 1, header.length);
+        for (int i = 0; i < header.length; i++) {
+            String line = header[i];
+            String[] result = line.split(":", 2);
+            if (result.length < 2) {
+                break;
+            }
+            headers.put(result[0], result[1]);
+        }
         if (uri.contains("?")) {
             String[] elements = uri.split("[?]");
             this.uri = elements[0];
@@ -32,6 +60,11 @@ public class HttpRequest {
                 String[] keyValue = o.split("=");
                 this.parameters.put(keyValue[0], keyValue[1]);
             }
+        }
+        if (method == HttpMethod.POST) {
+            this.body = rawRequest.substring(
+                    rawRequest.indexOf("\r\n\r\n") + 4
+            );
         }
     }
 
@@ -43,11 +76,10 @@ public class HttpRequest {
         return parameters.get(key);
     }
 
-    public void printInfo(boolean showRawRequest) {
-        System.out.println("uri: " + uri);
-        System.out.println("method: " + method);
-        if (showRawRequest) {
-            System.out.println(rawRequest);
-        }
+    public void printInfo() {
+        logger.info("uri: " + uri);
+        logger.info("method: " + method);
+        logger.info("body: " + body);
+        logger.info(rawRequest);
     }
 }
