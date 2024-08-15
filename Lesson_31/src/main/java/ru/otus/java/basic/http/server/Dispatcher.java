@@ -1,5 +1,7 @@
 package ru.otus.java.basic.http.server;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ru.otus.java.basic.http.server.processors.*;
 
 import java.io.IOException;
@@ -9,9 +11,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Dispatcher {
-    private Map<String, RequestProcessor> processors;
-    private RequestProcessor defaultNotFoundRequestProcessor;
-    private RequestProcessor defaultInternalServerErrorProcessor;
+    private final Map<String, RequestProcessor> processors;
+    private final RequestProcessor defaultNotFoundRequestProcessor;
+    private final RequestProcessor defaultInternalServerErrorProcessor;
+    private static final Logger logger = LoggerFactory.getLogger(Dispatcher.class);
 
     public Dispatcher() {
         this.processors = new HashMap<>();
@@ -31,7 +34,7 @@ public class Dispatcher {
             }
             processors.get(request.getUri()).execute(request, out);
         } catch (BadRequestException e) {
-            e.printStackTrace();
+            logger.error("Возникло BadRequestException ",e);
             String response = "" +
                     "HTTP/1.1 400 Bad Request\r\n" +
                     "Content-Type: text/html\r\n" +
@@ -39,7 +42,7 @@ public class Dispatcher {
                     "<html><body><h1>" + e.getMessage() + "</h1></body></html>";
             out.write(response.getBytes(StandardCharsets.UTF_8));
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Возникло исключение ",e);
             defaultInternalServerErrorProcessor.execute(request, out);
         }
     }

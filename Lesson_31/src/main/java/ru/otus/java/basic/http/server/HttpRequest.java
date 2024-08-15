@@ -80,6 +80,7 @@ public class HttpRequest {
         logger.info("uri: " + uri);
         logger.info("method: " + method);
         logger.info("body: " + body);
-        logger.info(rawRequest);
+        logger.debug(rawRequest);
     }
+
 }
