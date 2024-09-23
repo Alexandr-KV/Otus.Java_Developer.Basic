@@ -11,7 +11,6 @@ import project.utils.JwtUtils;
 import project.utils.RequestUtils;
 import project.utils.ResponseUtils;
 import project.authentication.AuthService;
-import ru.otus.exception.*;
 import io.javalin.Javalin;
 import io.jsonwebtoken.Jwts;
 import org.slf4j.Logger;
